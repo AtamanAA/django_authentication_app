@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 
 from .forms import RegisterUserForm, LoginUserForm
 
@@ -24,6 +25,11 @@ def register_user(request):
                 user = authenticate(username=username, password=password)
                 login(request, user)
                 messages.success(request, ("You have successfully registered!"))
+
+                message = f"register new user: {username}"
+                send_mail('Subject here', message, 'atamanpydev@gmail.com', ['atamanenkoalex90@gmail.com'],
+                          fail_silently=False)
+
                 return redirect("index")
     else:
         form = RegisterUserForm()
