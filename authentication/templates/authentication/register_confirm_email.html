@@ -7,11 +7,9 @@
 
     <div class="col-12 col-lg-10 col-xl-8 col-xxl-6">
         <h1>Register</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input class="btn btn-outline-success" type="submit" value="Register">
-        </form>
+        <p>
+            Please check {{email}} to complete registration
+        </p>
     </div>
 
 {% endblock %}
