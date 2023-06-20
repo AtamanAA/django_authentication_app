@@ -1,4 +1,9 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import (
+    UserCreationForm,
+    AuthenticationForm,
+    UserChangeForm,
+    PasswordChangeForm,
+)
 from django.contrib.auth.models import User
 from django import forms
 from django.core.exceptions import ValidationError
@@ -60,3 +65,53 @@ class LoginUserForm(AuthenticationForm):
         super(LoginUserForm, self).__init__(*args, **kwargs)
         self.fields["username"].widget.attrs["class"] = "form-control"
         self.fields["password"].widget.attrs["class"] = "form-control"
+
+
+class UpdateUserFormTEST(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ("username", "email")
+
+
+class UpdateUserForm(forms.ModelForm):
+    username = forms.CharField(
+        label="Name",
+        max_length=15,
+        error_messages={"max_length": "Use a shorter name"},
+    )
+    email = forms.EmailField(
+        label="E-mail",
+        max_length=40,
+        error_messages={"invalid": "Enter the correct email address!"},
+    )
+
+    class Meta:
+        model = User
+        fields = ("username", "email")
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateUserForm, self).__init__(*args, **kwargs)
+        self.fields["username"].widget.attrs["class"] = "form-control"
+        self.fields["email"].widget.attrs["class"] = "form-control-plaintext"
+
+
+class PasswordChangeUserForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label="Old password", max_length=20, widget=forms.PasswordInput
+    )
+    new_password1 = forms.CharField(
+        label="New password", max_length=20, widget=forms.PasswordInput
+    )
+    new_password2 = forms.CharField(
+        label="Confirmation new password", max_length=20, widget=forms.PasswordInput
+    )
+
+    class Meta:
+        model = User
+        fields = ("old_password", "new_password1", "new_password2")
+
+    def __init__(self, *args, **kwargs):
+        super(PasswordChangeUserForm, self).__init__(*args, **kwargs)
+        self.fields["old_password"].widget.attrs["class"] = "form-control"
+        self.fields["new_password1"].widget.attrs["class"] = "form-control"
+        self.fields["new_password2"].widget.attrs["class"] = "form-control"

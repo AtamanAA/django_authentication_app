@@ -1,11 +1,16 @@
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 
-from .forms import RegisterUserForm, LoginUserForm
+from .forms import (
+    RegisterUserForm,
+    LoginUserForm,
+    UpdateUserForm,
+    PasswordChangeUserForm,
+)
 from .tokens import account_activation_token
 
 
@@ -94,3 +99,44 @@ def logout_user(request):
     logout(request)
     messages.success(request, ("You logged out!"))
     return redirect("index")
+
+
+def update_user(request):
+    if request.user.is_authenticated:
+        user = User.objects.get(id=request.user.id)
+        if request.method == "POST":
+            username = request.POST["username"]
+            email = request.POST["email"]
+            if user.email == email or len(User.objects.filter(email=email)) == 0:
+                user.username = username
+                user.email = email
+                user.save()
+                login(request, user)
+                messages.success(request, ("Your profile successfully updated!"))
+                return redirect("index")
+
+            else:
+                messages.error(
+                    request,
+                    (f"Email {email} is already in use! Choose another."),
+                )
+
+        form = UpdateUserForm(request.POST or None, instance=user)
+        return render(request, "authentication/update_user.html", {"form": form})
+
+    else:
+        messages.error(request, ("You must register to access this page!"))
+        return redirect("login")
+
+
+def change_password(request):
+    if request.method == "POST":
+        form = PasswordChangeUserForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            messages.success(request, "Your password was successfully updated!")
+            return redirect("index")
+    else:
+        form = PasswordChangeUserForm(request.user)
+        return render(request, "authentication/change_password.html", {"form": form})
