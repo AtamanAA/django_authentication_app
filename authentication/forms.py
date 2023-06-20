@@ -1,7 +1,6 @@
 from django.contrib.auth.forms import (
     UserCreationForm,
     AuthenticationForm,
-    UserChangeForm,
     PasswordChangeForm,
 )
 from django.contrib.auth.models import User
@@ -11,9 +10,21 @@ from django.core.exceptions import ValidationError
 
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(
-        label="Name",
+        label="Username",
         max_length=15,
         error_messages={"max_length": "Use a shorter name"},
+    )
+    first_name = forms.CharField(
+        label="First name",
+        max_length=40,
+        required=False,
+        error_messages={"max_length": "Use a shorter first name"},
+    )
+    last_name = forms.CharField(
+        label="Last name",
+        max_length=40,
+        required=False,
+        error_messages={"max_length": "Use a shorter last name"},
     )
     email = forms.EmailField(
         label="E-mail",
@@ -29,11 +40,20 @@ class RegisterUserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ("username", "email", "password1", "password2")
+        fields = (
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "password1",
+            "password2",
+        )
 
     def __init__(self, *args, **kwargs):
         super(RegisterUserForm, self).__init__(*args, **kwargs)
         self.fields["username"].widget.attrs["class"] = "form-control"
+        self.fields["first_name"].widget.attrs["class"] = "form-control"
+        self.fields["last_name"].widget.attrs["class"] = "form-control"
         self.fields["email"].widget.attrs["class"] = "form-control"
         self.fields["password1"].widget.attrs["class"] = "form-control"
         self.fields["password2"].widget.attrs["class"] = "form-control"
@@ -49,7 +69,7 @@ class RegisterUserForm(UserCreationForm):
 
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(
-        label="Name",
+        label="Username",
         max_length=15,
         error_messages={"max_length": "Use a shorter name"},
     )
@@ -67,17 +87,23 @@ class LoginUserForm(AuthenticationForm):
         self.fields["password"].widget.attrs["class"] = "form-control"
 
 
-class UpdateUserFormTEST(UserChangeForm):
-    class Meta:
-        model = User
-        fields = ("username", "email")
-
-
 class UpdateUserForm(forms.ModelForm):
     username = forms.CharField(
-        label="Name",
+        label="Username",
         max_length=15,
         error_messages={"max_length": "Use a shorter name"},
+    )
+    first_name = forms.CharField(
+        label="First name",
+        max_length=40,
+        required=False,
+        error_messages={"max_length": "Use a shorter first name"},
+    )
+    last_name = forms.CharField(
+        label="Last name",
+        max_length=40,
+        required=False,
+        error_messages={"max_length": "Use a shorter last name"},
     )
     email = forms.EmailField(
         label="E-mail",
@@ -87,11 +113,13 @@ class UpdateUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("username", "email")
+        fields = ("username", "first_name", "last_name", "email")
 
     def __init__(self, *args, **kwargs):
         super(UpdateUserForm, self).__init__(*args, **kwargs)
         self.fields["username"].widget.attrs["class"] = "form-control"
+        self.fields["first_name"].widget.attrs["class"] = "form-control"
+        self.fields["last_name"].widget.attrs["class"] = "form-control"
         self.fields["email"].widget.attrs["class"] = "form-control-plaintext"
 
 
