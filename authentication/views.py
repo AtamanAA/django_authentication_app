@@ -106,24 +106,24 @@ def update_user(request):
         user = User.objects.get(id=request.user.id)
         if request.method == "POST":
             username = request.POST["username"]
+            first_name = request.POST["first_name"]
+            last_name = request.POST["last_name"]
             email = request.POST["email"]
-            if user.email == email or len(User.objects.filter(email=email)) == 0:
+            if not User.objects.filter(username=username):
                 user.username = username
-                user.email = email
+                user.first_name = first_name
+                user.last_name = last_name
                 user.save()
                 login(request, user)
                 messages.success(request, ("Your profile successfully updated!"))
                 return redirect("index")
-
             else:
                 messages.error(
                     request,
-                    (f"Email {email} is already in use! Choose another."),
+                    (f"Username {username} is already in use! Choose another."),
                 )
-
         form = UpdateUserForm(request.POST or None, instance=user)
         return render(request, "authentication/update_user.html", {"form": form})
-
     else:
         messages.error(request, ("You must register to access this page!"))
         return redirect("login")
