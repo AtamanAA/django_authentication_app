@@ -126,19 +126,6 @@ class UpdateUserForm(forms.ModelForm):
 
 
 class PasswordChangeUserForm(PasswordChangeForm):
-    old_password = forms.CharField(
-        label="Old password", max_length=32, widget=forms.PasswordInput
-    )
-    new_password1 = forms.CharField(
-        label="New password", max_length=32, widget=forms.PasswordInput
-    )
-    new_password2 = forms.CharField(
-        label="Confirmation new password", max_length=32, widget=forms.PasswordInput
-    )
-
-    class Meta:
-        model = User
-        fields = ("old_password", "new_password1", "new_password2")
 
     def __init__(self, *args, **kwargs):
         super(PasswordChangeUserForm, self).__init__(*args, **kwargs)

@@ -132,11 +132,18 @@ def update_user(request):
 def change_password(request):
     if request.method == "POST":
         form = PasswordChangeUserForm(user=request.user, data=request.POST)
+        old_password = request.POST["old_password"]
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
             messages.success(request, "Your password was successfully updated!")
             return redirect("index")
+        elif not request.user.check_password(old_password):
+            messages.error(request, ("Your old password was entered incorrectly. Please enter it again."))
+        else:
+            messages.error(request, ("New password is incorect or the two new password fields didn’t match."))
+        return redirect("change_password")
+
     else:
         form = PasswordChangeUserForm(request.user)
         return render(request, "authentication/change_password.html", {"form": form})
