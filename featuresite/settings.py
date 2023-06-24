@@ -46,6 +46,8 @@ else:
 
 # Application definition
 
+SITE_ID = 2
+
 INSTALLED_APPS = [
     # Use WhiteNoise's runserver implementation instead of the Django default, for dev-prod parity.
     "whitenoise.runserver_nostatic",
@@ -56,7 +58,22 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "authentication",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {"access_type": "online"}
+    }
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -177,3 +194,13 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 DEFAULT_FROM_EMAIL = "atamanpydev@gmail.com"
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+SOCIALACCOUNT_LOGIN_ON_GET=True

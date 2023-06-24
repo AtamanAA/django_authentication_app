@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load socialaccount %}
 
 {% block title %}Login{% endblock %}
 
@@ -14,5 +15,6 @@
             <a class="btn btn-outline-secondary" href="{% url 'password_reset' %}" role="button">Forgot password</a>
         </form>
     </div>
+    <a href="{% provider_login_url 'google' %}?next=/">Login With Google</a>
 
 {% endblock %}

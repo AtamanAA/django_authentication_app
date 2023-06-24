@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load socialaccount %}
 
 {% block title %}Register{% endblock %}
 
@@ -13,5 +14,7 @@
             <input class="btn btn-outline-success" type="submit" value="Register">
         </form>
     </div>
+
+    <a href="{% provider_login_url 'google' %}?next=/">Login With Google</a>
 
 {% endblock %}

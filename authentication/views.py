@@ -59,7 +59,7 @@ def activate(request, id, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        login(request, user)
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         messages.success(request, ("You have successfully registered!"))
         return redirect("index")
     else:
@@ -114,7 +114,7 @@ def update_user(request):
                 user.first_name = first_name
                 user.last_name = last_name
                 user.save()
-                login(request, user)
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 messages.success(request, ("Your profile successfully updated!"))
                 return redirect("index")
             else:
