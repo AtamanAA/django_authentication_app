@@ -34,7 +34,7 @@
                                 {% if user.profile.photo == "profile/photo/default_avatar.jpg" and user.socialaccount_set.all.0.get_avatar_url %}
                                     <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="rounded-circle" style="height:40px; width: 40px; margin: auto 0;" />
                                 {% else %}
-                                    <img src={{ user.profile.photo.url }} class="rounded-circle" style="height:40px; width: 40px; margin: auto 0; ">
+                                    <img src="{{ user.profile.photo.url }}" class="rounded-circle" style="height:40px; width: 40px; margin: auto 0; ">
                                 {% endif %}
                             </li>
 
