@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from django import forms
 from django.core.exceptions import ValidationError
 
+from .models import Profile
+
 
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(
@@ -115,7 +117,12 @@ class UpdateUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("username", "first_name", "last_name", "email")
+        fields = (
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+        )
 
     def __init__(self, *args, **kwargs):
         super(UpdateUserForm, self).__init__(*args, **kwargs)
@@ -125,8 +132,13 @@ class UpdateUserForm(forms.ModelForm):
         self.fields["email"].widget.attrs["class"] = "form-control-plaintext"
 
 
-class PasswordChangeUserForm(PasswordChangeForm):
+class ProfileUserForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["photo"]
 
+
+class PasswordChangeUserForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
         super(PasswordChangeUserForm, self).__init__(*args, **kwargs)
         self.fields["old_password"].widget.attrs["class"] = "form-control"
