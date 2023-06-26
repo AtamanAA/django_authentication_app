@@ -35,5 +35,5 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
-    path('social/signup/', views.signup_redirect, name='signup_redirect'),
+    path("social/signup/", views.signup_redirect, name="signup_redirect"),
 ]

@@ -11,10 +11,18 @@
         <form action="{% url 'login' %}" method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <input class="btn btn-outline-success" type="submit" value="Login">
-            <a class="btn btn-outline-secondary" href="{% url 'password_reset' %}" role="button">Forgot password</a>
+            <div class="row">
+                <div class="col-md-12">
+                    <input class="btn btn-outline-success" type="submit" value="Login">
+                    <a class="btn btn-outline-dark" href="{% provider_login_url 'google' %}?next=/" role="button" style="text-transform:none">
+                      <img width="16px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+                      Login with Google
+                    </a>
+                    <a class="btn btn-outline-secondary" href="{% url 'password_reset' %}" role="button">Forgot password</a>
+                </div>
+            </div>
+
         </form>
     </div>
-    <a href="{% provider_login_url 'google' %}?next=/">Login With Google</a>
 
 {% endblock %}

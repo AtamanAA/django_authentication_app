@@ -133,9 +133,15 @@ class UpdateUserForm(forms.ModelForm):
 
 
 class ProfileUserForm(forms.ModelForm):
+    photo = forms.ImageField(widget=forms.FileInput)
+
     class Meta:
         model = Profile
         fields = ["photo"]
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileUserForm, self).__init__(*args, **kwargs)
+        self.fields["photo"].widget.attrs["class"] = "form-control"
 
 
 class PasswordChangeUserForm(PasswordChangeForm):

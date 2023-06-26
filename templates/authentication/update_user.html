@@ -6,21 +6,24 @@
 
 {% block content %}
 
-    <div class="col-12 col-lg-10 col-xl-8 col-xxl-6">
-        <h1>Update</h1>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
-            <input class="btn btn-outline-success" type="submit" value="Update">
-            <a class="btn btn-outline-secondary" href="{% url 'change_password' %}" role="button">Change password</a>
-        </form>
+    <div class="col-12 col-lg-12 col-xl-10 col-xxl-8" style="display: flex;">
+        <div class="col-md-8">
+            <h1>Update user</h1>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                {{ profile_form.as_p }}
+                <input class="btn btn-outline-success" type="submit" value="Update">
+                <a class="btn btn-outline-secondary" href="{% url 'change_password' %}" role="button">Change password</a>
+            </form>
+        </div>
+        <div class="col-3" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center;" >
+            {% if user.profile.photo == "profile/photo/default_avatar.jpg" and user.socialaccount_set.all.0.get_avatar_url %}
+                <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="img-fluid rounded-start" style="margin-top: 55px; margin-left: 16px;" />
+            {% else %}
+                <img src={{ user.profile.photo.url }} class="img-fluid rounded-start" style="margin-top: 55px; margin-left: 16px;">
+            {% endif %}
+        </div>
     </div>
-
-    {% if user.profile.photo == "profile/photo/default_avatar.jpg" and user.socialaccount_set.all.0.get_avatar_url %}
-        <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" />
-    {% else %}
-        <img src={{ user.profile.photo.url }} alt="">
-    {% endif %}
 
 {% endblock %}
