@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
-from allauth.socialaccount.models import SocialAccount
 
 from .models import Profile
 from .forms import (

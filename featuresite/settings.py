@@ -46,7 +46,10 @@ else:
 
 # Application definition
 
-SITE_ID = 2
+if IS_HEROKU_APP:
+    SITE_ID = 3
+else:
+    SITE_ID = 2
 
 INSTALLED_APPS = [
     # Use WhiteNoise's runserver implementation instead of the Django default, for dev-prod parity.
