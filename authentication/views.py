@@ -182,3 +182,8 @@ def change_password(request):
     else:
         form = PasswordChangeUserForm(request.user)
         return render(request, "authentication/change_password.html", {"form": form})
+
+
+def signup_redirect(request):
+    messages.error(request, "Something wrong here, it may be that you already have account!")
+    return redirect("index")
