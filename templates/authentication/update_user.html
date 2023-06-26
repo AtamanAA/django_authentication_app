@@ -20,8 +20,10 @@
         <div class="col-3" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center;" >
             {% if user.profile.photo == "profile/photo/default_avatar.jpg" and user.socialaccount_set.all.0.get_avatar_url %}
                 <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="img-fluid rounded-start" style="margin-top: 55px; margin-left: 16px;" />
-            {% else %}
+            {% elif user.profile.photo %}
                 <img src={{ user.profile.photo.url }} class="img-fluid rounded-start" style="margin-top: 55px; margin-left: 16px;">
+            {% else %}
+                <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="img-fluid rounded-start" style="margin-top: 55px; margin-left: 16px;" />
             {% endif %}
         </div>
     </div>
