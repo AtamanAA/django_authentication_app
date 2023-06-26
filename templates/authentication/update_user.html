@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load socialaccount %}
 
 {% block title %}Update{% endblock %}
 
@@ -7,12 +8,19 @@
 
     <div class="col-12 col-lg-10 col-xl-8 col-xxl-6">
         <h1>Update</h1>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
             <input class="btn btn-outline-success" type="submit" value="Update">
             <a class="btn btn-outline-secondary" href="{% url 'change_password' %}" role="button">Change password</a>
         </form>
     </div>
+
+    {% if user.profile.photo == "profile/photo/default_avatar.jpg" and user.socialaccount_set.all.0.get_avatar_url %}
+        <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" />
+    {% else %}
+        <img src={{ user.profile.photo.url }} alt="">
+    {% endif %}
 
 {% endblock %}
